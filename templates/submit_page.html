@@ -1,0 +1,25 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+</head>
+<body>
+<div class='container'>
+    <h1 class='page-header'>Submit Deck</h1>
+    <table class='table table-striped'>
+        <tr>
+            <th>Decklist</th>
+            <th>Wins</th>
+            <th>Losses</th>
+        </tr>
+    </table>
+    <form action="/eternal/new/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Submit" />
+    </form>
+</body>

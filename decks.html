@@ -1,0 +1,32 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+</head>
+<body>
+<div class='container'>
+<h1 class='page-header'>Decks</h1>
+</div>
+<div class='container'>
+    <table class='table table-striped'>
+        <tr>
+            <th>Deck</th>
+            <th>Win / Loss</th>
+            <th>Winrate</th>
+            <th></th>
+        </tr>
+        {% for r in decks %}
+        <tr>
+            <td>{{ r.deck }}</td>
+            <td>{{ r.wins }} / {{ r.losses }}</td>
+            <td>{{ r.winrate }}%</td>
+            <td><a href="{% url 'TrackobotAnalysis.views.analyze' %}?deck={{r.deck}}">Analyze</a></td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
+</body>
