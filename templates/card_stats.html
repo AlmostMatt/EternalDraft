@@ -16,6 +16,8 @@
             <th>Decks</th>
             <th>Games</th>
             <th>Winrate</th>
+            <th>Cost</th>
+            <th>Colors</th>
         </tr>
         {% for r in cards %}
         <tr>
@@ -23,6 +25,8 @@
             <td>{{ r.decks }}</td>
             <td>{{ r.games }}</td>
             <td>{{ r.winrate }}</td>
+            <td>{{ r.cost }}</td>
+            <td>{{ r.colors }}</td>
         </tr>
         {% endfor %}
     </table>

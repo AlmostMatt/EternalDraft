@@ -46,6 +46,8 @@ def card_stats(request):
         if not wins and not losses: continue  # this happens if a card object is not in any decks
         card_info.append({
             'name': card.name,
+            'cost': card.cost,
+            'colors': card.colors,
             'decks': num_decks,
             'games': wins + losses,
             'winrate': str((100 * wins) / (wins + losses)) + "%",
