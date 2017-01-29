@@ -4,6 +4,9 @@ from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from EternalDraft.models import *
 from django.utils import timezone
+from django.views.generic.edit import DeleteView
+from django.core.urlresolvers import reverse_lazy
+from django.db.models import Sum
 
 def submit_page(request):
     if request.method == 'POST':
@@ -27,8 +30,30 @@ def decks(request):
     # todo: faded color icons
     decks = Deck.objects.all()
     return render(request, 'decks.html', {'decks': decks})
-            
+        
+#  TODO: https://docs.djangoproject.com/en/1.10/topics/db/aggregation/
+#   associate aggregates with the objects
+# q = cards.annotate(Sum('deck__wins', distinct=True), Sum('deck__losses', distinct=True))
 def card_stats(request):
     # todo: scrape decklist card images
-    cards = Card.objects.all
-    return render(request, 'card_stats.html', {'cards': cards})
+    cards = Card.objects.all()
+    card_info = []
+    for card in cards:
+        decks = Deck.objects.filter(cards__id=card.id)
+        num_decks = decks.count()
+        aggregates = decks.aggregate(wins=Sum('wins'), losses=Sum('losses'))
+        wins, losses = aggregates['wins'], aggregates['losses']
+        if not wins and not losses: continue  # this happens if a card object is not in any decks
+        card_info.append({
+            'name': card.name,
+            'decks': num_decks,
+            'games': wins + losses,
+            'winrate': str((100 * wins) / (wins + losses)) + "%",
+        })
+    card_info.sort(reverse=True, key=lambda x:x['winrate'])
+    return render(request, 'card_stats.html', {'cards': card_info})
+
+class DeleteDeck(DeleteView):
+    model = Deck
+    success_url = reverse_lazy('decks')
+    template_name = 'delete_deck.html'

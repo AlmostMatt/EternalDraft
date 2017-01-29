@@ -9,7 +9,7 @@
 </head>
 <body>
 <div class='container'>
-    <h1 class='page-header'>Submit Deck</h1>
+    <h1 class='page-header'>Card Stats</h1>
     <table class='table table-striped'>
         <tr>
             <th>Card</th>
@@ -20,9 +20,9 @@
         {% for r in cards %}
         <tr>
             <td>{{ r.name }}</td>
-            <td> 2 </td>
-            <td> 10 </td>
-            <td> 50% </td>
+            <td>{{ r.decks }}</td>
+            <td>{{ r.games }}</td>
+            <td>{{ r.winrate }}</td>
         </tr>
         {% endfor %}
     </table>

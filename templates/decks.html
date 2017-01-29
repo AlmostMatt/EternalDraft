@@ -9,13 +9,14 @@
 </head>
 <body>
 <div class='container'>
-    <h1 class='page-header'>Submit Deck</h1>
+    <h1 class='page-header'>Decks</h1>
     <table class='table table-striped'>
         <tr>
             <th>Decklist</th>
             <th>Wins</th>
             <th>Losses</th>
             <th>Colors</th>
+            <th></th>
         </tr>
         {% for r in decks %}
         <tr>
@@ -23,6 +24,7 @@
             <td>{{ r.wins }}</td>
             <td>{{ r.losses }}</td>
             <td>{{ r.colors }}</td>
+            <td><a href="{% url 'delete_deck' pk=r.pk %}">Delete</a></td>
         </tr>
         {% endfor %}
     </table>
