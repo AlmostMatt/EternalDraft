@@ -1,0 +1,29 @@
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+</head>
+<body>
+<div class='container'>
+    <h1 class='page-header'>Submit Deck</h1>
+    <table class='table table-striped'>
+        <tr>
+            <th>Card</th>
+            <th>Decks</th>
+            <th>Games</th>
+            <th>Winrate</th>
+        </tr>
+        {% for r in cards %}
+        <tr>
+            <td>{{ r.name }}</td>
+            <td> 2 </td>
+            <td> 10 </td>
+            <td> 50% </td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
