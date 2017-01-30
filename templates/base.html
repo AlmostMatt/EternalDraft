@@ -20,10 +20,10 @@
 
     {% if user.is_authenticated %}
         Logged in: {{ user.username }} 
-        (<a href="{% url 'logout' %}?next=/eternal/decks/">Log out</a>)
+        (<a href="{% url 'logout' %}?next={% url 'decks' %}">Log out</a>)
     {% else %}
-       <a href="{% url 'login' %}?next=/eternal/decks/">Log in</a> |
-       <a href="{% url 'register' %}?next=/eternal/decks/">Register</a>
+       <a href="{% url 'login' %}?next={% url 'decks' %}">Log in</a> |
+       <a href="{% url 'register' %}?next={% url 'decks' %}">Register</a>
     {% endif %}
     <hr />
     {% endblock %}

@@ -27,7 +27,7 @@ class SubmitForm(forms.Form):
     wins = forms.IntegerField(label='Wins', initial=3)
     losses = forms.IntegerField(label='Losses', initial=3)
 
-@login_required(login_url='/eternal/login/')
+@login_required
 def decks(request):
     # todo: faded color icons
     decks = Deck.objects.all()
@@ -36,7 +36,7 @@ def decks(request):
 #  TODO: https://docs.djangoproject.com/en/1.10/topics/db/aggregation/
 #   associate aggregates with the objects
 # q = cards.annotate(Sum('deck__wins', distinct=True), Sum('deck__losses', distinct=True))
-@login_required(login_url='/eternal/login/')
+@login_required
 def card_stats(request):
     # todo: scrape decklist card images
     cards = Card.objects.all()
