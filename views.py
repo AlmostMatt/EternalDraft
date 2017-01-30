@@ -19,7 +19,7 @@ def submit_page(request):
         return HttpResponseRedirect('/eternal/new/')
     else:
         form = SubmitForm()
-        return render(request, 'submit_page.html',
+        return render(request, 'eternal/submit_page.html',
             {'form': form})
 
 class SubmitForm(forms.Form):
@@ -31,7 +31,7 @@ class SubmitForm(forms.Form):
 def decks(request):
     # todo: faded color icons
     decks = Deck.objects.all()
-    return render(request, 'decks.html', {'decks': decks})
+    return render(request, 'eternal/decks.html', {'decks': decks})
         
 #  TODO: https://docs.djangoproject.com/en/1.10/topics/db/aggregation/
 #   associate aggregates with the objects
@@ -56,9 +56,9 @@ def card_stats(request):
             'winrate': str((100 * wins) / (wins + losses)) + "%",
         })
     card_info.sort(reverse=True, key=lambda x:x['winrate'])
-    return render(request, 'card_stats.html', {'cards': card_info})
+    return render(request, 'eternal/card_stats.html', {'cards': card_info})
 
 class DeleteDeck(DeleteView):
     model = Deck
     success_url = reverse_lazy('decks')
-    template_name = 'delete_deck.html'
+    template_name = 'eternal/delete_deck.html'
