@@ -17,6 +17,7 @@
     {% block header %}
     <a href="{% url 'decks' %}">Decks</a> | 
     <a href="{% url 'card_stats' %}">Card Stats</a> | 
+    <a href="{% url 'new_deck' %}">New Deck</a> | 
 
     {% if user.is_authenticated %}
         Logged in: {{ user.username }} 

@@ -1,14 +1,6 @@
-{# Load the tag library #}
-{% load bootstrap3 %}
+{% extends "base.html" %}
 
-{# Load CSS and JavaScript #}
-{% bootstrap_css %}
-{% bootstrap_javascript %}
-
-<head>
-</head>
-<body>
-<div class='container'>
+{% block content %}
     <h1 class='page-header'>Submit Deck</h1>
     <table class='table table-striped'>
         <tr>
@@ -17,9 +9,9 @@
             <th>Losses</th>
         </tr>
     </table>
-    <form action="/eternal/new/" method="post">
+    <form action="{% url 'new_deck' %}" method="post">
         {% csrf_token %}
         {{ form }}
         <input type="submit" value="Submit" />
     </form>
-</body>
+{% endblock %}
