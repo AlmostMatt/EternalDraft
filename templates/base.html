@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+{# Load the tag library #}
+{% load bootstrap3 %}
+
+{# Load CSS and JavaScript #}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+<head>
+    <title>{% block title %}Title test{% endblock %}</title>
+</head>
+<body>
+<div class='container'>
+    <div id="header">
+    {% block header %}
+    <a href="{% url 'decks' %}">Decks</a> | 
+    <a href="{% url 'card_stats' %}">Card Stats</a> | 
+
+    {% if user.is_authenticated %}
+        Logged in: {{ user.username }} 
+        (<a href="{% url 'logout' %}?next=/eternal/decks/">Log out</a>)
+    {% else %}
+       <a href="{% url 'login' %}?next=/eternal/decks/">Log in</a> |
+       <a href="{% url 'register' %}?next=/eternal/decks/">Register</a>
+    {% endif %}
+    <hr />
+    {% endblock %}
+    </div>
+    
+    <div id="content" class='container'>
+    {% block content %}{% endblock %}
+    </div>
+</body>
