@@ -5,10 +5,11 @@ from django.http import HttpResponseRedirect
 from EternalDraft.models import *
 from django.utils import timezone
 from django.views.generic.edit import DeleteView
-from django.core.urlresolvers import reverse_lazy
+from django.core.urlresolvers import reverse_lazy, reverse
 from django.db.models import Sum
 from django.contrib.auth.decorators import login_required
 
+@login_required
 def submit_page(request):
     if request.method == 'POST':
         cards = request.POST.get("cards", "")
@@ -16,7 +17,7 @@ def submit_page(request):
         losses = request.POST.get("losses", "")
         
         deck = new_deck(cards, wins, losses)
-        return HttpResponseRedirect('/eternal/new/')
+        return HttpResponseRedirect(reverse('decks'))
     else:
         form = SubmitForm()
         return render(request, 'eternal/submit_page.html',
