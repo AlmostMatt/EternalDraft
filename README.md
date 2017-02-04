@@ -14,7 +14,7 @@ django-admin startproject almostmatt .
 git submodule add https://github.com/AlmostMatt/EternalDraft.git  
 ```
 
-add `'EternalDraft',` and `'bootstrap3'`, to settings.py INSTALLED_APPS  
+add `'EternalDraft',` and `'bootstrap3',` to settings.py INSTALLED_APPS  
 add `url(r'^eternal/', include('EternalDraft.urls')),` to almostmatt/urls.py  
 
 ```
