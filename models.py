@@ -3,23 +3,15 @@ from django.utils import timezone
 from django.conf import settings
 import os
 
-# url = os.path.join(settings.STATIC_URL, 'data.json')
-# os.path.isfile(url)
-# CARD_DATA = open(url)
-
 class Deck(models.Model):
     cards = models.ManyToManyField(
         'Card',
         through='Contains',
-        # through_fields = ('deck', 'card')  # only necessary for ambiguous relationships
     )
     wins = models.IntegerField(default=0)
     losses = models.IntegerField(default=0)
     create_date=models.DateTimeField('date created', db_index=True)
     colors = models.CharField(max_length=5)
-    # TODO: add other aggregates like units, spells, power, influence (f t p j s)
-    # also have a 'splash' field, and card count by color
-    # and a "isSplash" attribute to the contains relationship (any color with <7 influence OR <7 cards)
 
 CARD_TYPE = {"unit":1, "spell":2, "weapon":3, "curse":4, "relic_weapon":5, "relic":6}
 class Card(models.Model):
@@ -27,8 +19,6 @@ class Card(models.Model):
     colors = models.CharField(max_length=2)
     cost = models.IntegerField(default=2)
     type = models.IntegerField(default=CARD_TYPE['unit'])
-    # TODO:  manually add info like "evasive", "removal", "unit", "spell", "relic weapon", "curse", "power"
-    # Probably dig through eternal files for some json data file or something
 
 class Contains(models.Model):
     deck = models.ForeignKey(Deck, on_delete=models.CASCADE)
@@ -66,19 +56,10 @@ def get_colors(card_name):
 
 # list colors in FTJPS order to match the game.
 def sort_colors(color_string):
-    return ''.join(sorted(color_string, key=lambda letter: "FTJPS".index(letter)))
-
-# If cards is a raw string, cant search for decks by card
-# If it is a many-to-many thing, I can query for decks that have a card but I think I lose the concept of count
-# I can alternatively have a "many to one" relationship where every card corresponds to a deck, and I may have multiple instances of effectively identical card objects
-
-# Having card objects is useful for card stats
-# ManyToManyField.through allows additional data for the relationship (count!)
-
+    return ''.join(sorted(color_string, key=lambda x: "FTJPS".index(x)))
 
 
 # determined by dumping a decklist of every card and splitting by alphabetical decreases
-
 CARD_COSTS = {
   "Charchain Flail": 0,
   "Flame Blast": 0,
@@ -534,11 +515,7 @@ CARD_COSTS = {
 }
 
 
-
-
-
-# determined by taking intersection of deck colors for decks that contain a card + manual corrections.  Does not contain every card.
-
+# determined by running a script on my past draft decks to identify each card as the color of the decks that contained it.
 CARD_COLORS = {
     "Accelerated Evolution": "PT",
     "Aerial Ace": "P",

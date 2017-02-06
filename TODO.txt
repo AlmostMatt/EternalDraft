@@ -1,0 +1,18 @@
+For cards, identify the following:
+name, colors, cost, type (unit/spell/weapon/...)
+optionally identify evasive units and removal
+Card info can be found at:
+http://www.numotgaming.com/cards/?filters=true&view=list
+
+Find a nice way to store and access these card information constants. Possibly as fixtures.
+
+For decks, count the following:
+units, spells, power cards, influence (for each of FTPJS)
+These can be aggregates or actual fields
+
+Identify which colors are being splashed in a deck (<= 5 cards of a color)
+Add 'is_splash' attribute to the contains relationship
+
+Update new_deck to handle bad inputs
+
+For card and deck previews, use the color icons instead of the letters (FTJPS are red, yellow, green, blue, dark purple)
