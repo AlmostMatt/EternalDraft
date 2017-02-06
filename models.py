@@ -37,23 +37,37 @@ class Contains(models.Model):
 
 def new_deck(cards, w, l):
     card_objs = []
+    deck_color_set = set()
     for card_txt in cards.split(')'):
         card_txt = card_txt.strip()
         if not card_txt: continue  # for the last item
         count = int(card_txt.split(' ')[0])
         name = card_txt[card_txt.index(' ') + 1: card_txt.index(' (')]
-        
-        colors = ""
-        if name in cardColors: colors = cardColors[name]
-        cost = 0
-        if name in cardCosts: cost = cardCosts[name]
-        
+        colors = get_colors(name)
+        for color in colors: deck_color_set.add(color)
+        cost = get_cost(name)
         card, created = Card.objects.get_or_create(name=name, defaults={'colors': colors, 'cost': cost})
         card_objs.append((count, card))
-    deck = Deck.objects.create(wins=w, losses=l, create_date=timezone.now(), colors='FTJPS')
+    deck_colors = sort_colors(''.join(deck_color_set))
+    deck = Deck.objects.create(wins=w, losses=l, create_date=timezone.now(), colors=deck_colors)
     Contains.objects.bulk_create(
         [Contains(deck=deck, card=card_obj, count=count) for count, card_obj in card_objs])
-    
+
+
+def get_cost(card_name):
+    if card_name in CARD_COSTS:
+        return CARD_COSTS[card_name]
+    return -1
+
+def get_colors(card_name):
+    if card_name in CARD_COLORS:
+        return sort_colors(CARD_COLORS[card_name])
+    return ''
+
+# list colors in FTJPS order to match the game.
+def sort_colors(color_string):
+    return ''.join(sorted(color_string, key=lambda letter: "FTJPS".index(letter)))
+
 # If cards is a raw string, cant search for decks by card
 # If it is a many-to-many thing, I can query for decks that have a card but I think I lose the concept of count
 # I can alternatively have a "many to one" relationship where every card corresponds to a deck, and I may have multiple instances of effectively identical card objects
@@ -65,7 +79,7 @@ def new_deck(cards, w, l):
 
 # determined by dumping a decklist of every card and splitting by alphabetical decreases
 
-cardCosts = {
+CARD_COSTS = {
   "Charchain Flail": 0,
   "Flame Blast": 0,
   "Sand Warrior": 0,
@@ -523,9 +537,9 @@ cardCosts = {
 
 
 
-# determined by taking intersection of deck colors for decks that contain a card + manual corrections
+# determined by taking intersection of deck colors for decks that contain a card + manual corrections.  Does not contain every card.
 
-cardColors = {
+CARD_COLORS = {
     "Accelerated Evolution": "PT",
     "Aerial Ace": "P",
     "Ageless Mentor": "TP",
